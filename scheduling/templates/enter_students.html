@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Курсанты</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h2>Введите имена курсантов на вождение</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+</form>
+<hr>
+<table>
+    <tr>
+        <th>Имя курсанта</th>
+        <th>Имя инструктора</th>
+        <th>Тип трансмиссии</th>
+        <th>День недели</th>
+        <th>Свободное время</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.teacher }}</td>
+        <td>{{ student.subject }}</td>
+        <td>{{ student.get_day_of_week_display }}</td>
+        <td>{{ student.free_time }}</td>
+        <td><a href="edit/{{ student.id }}">Изменить</a></td>
+        <td><a href="delete/{{ student.id }}">Удалить</a></td>
+    </tr>
+    {% endfor %}
+</table>
+<p><a href="/">На главную</a></p>
+<p><a href="/time_slots">Часы вождения</a></p>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_subject').change(function () {
+            var url = "{% url 'get_teachers' %}";
+            var subjectId = $(this).val();
+
+            $.ajax({
+                url: url,
+                data: {
+                    'subject_id': subjectId
+                },
+                success: function (data) {
+                    var select = $('#id_teacher');
+                    select.empty();
+
+                    $.each(data, function (index, item) {
+                        select.append($('<option></option>').attr('value', item.id).text(item.name));
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- scheduling/templates/scheduling/calculate_schedule.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расчет расписания</title>
+</head>
+<body>
+    <h1>Расчет расписания</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Рассчитать расписание</button>
+    </form>
+</body>
+</html>

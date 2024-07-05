@@ -1,0 +1,28 @@
+<!-- scheduling/templates/scheduling/schedule.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расписание занятий</title>
+</head>
+<body>
+    <h1>Расписание занятий</h1>
+    <ul>
+        {% for lesson in lessons %}
+            <li>
+                Студент: {{ lesson.student.name }}<br>
+                Предмет: {{ lesson.subject.name }}<br>
+                Учитель: {{ lesson.teacher.name }}<br>
+                День недели: {{ lesson.get_day_of_week_display }}<br>
+                Время: {{ lesson.time_slot.start_time }} - {{ lesson.time_slot.end_time }}
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+    <a href="calculate/">Рассчитать расписание</a><br>
+    <a href="students/">Курсанты</a><br>
+     <a href="teachers/">Инструкторы</a><br>
+    <a href="subjects/">Виды трансмиссий</a><br>
+ <a href="time_slots/">Время для занятий</a>
+</body>
+</html>

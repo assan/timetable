@@ -1,0 +1,16 @@
+<!-- scheduling/templates/scheduling/update_availability.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Обновление доступности</title>
+</head>
+<body>
+    <h1>Обновить доступность</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Обновить</button>
+    </form>
+</body>
+</html>

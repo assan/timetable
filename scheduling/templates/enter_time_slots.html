@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Введите часы аождения:</title>
+</head>
+<body>
+<h2>Введите часы аождения:</h2>
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+<hr>
+<table>
+    <tr>
+        <th>Время начала</th>
+        <th>Время конца</th>
+        <th></th>
+        <th></th>
+    </tr>
+{% for time_slot in time_slots %}
+    <tr>
+    <td>{{time_slot.start_time}}  </td>
+        <td>{{time_slot.end_time}}  </td>
+        <td><a href="edit/{{time_slot.id}}">Изменить</a> </td>
+        <td><a href="delete/{{time_slot.id}}">Удалить</a></td>
+    </tr>
+{%endfor%}
+</table>
+   <p><a href="/">На главную</a></p>
+    <p><a href="/time_slots">Часы вождения</a></p>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Инструкторы</title>
+</head>
+<body>
+<h2>Введите имя инструктора</h2>
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+<hr>
+<table>
+    <tr>
+        <th>Имя инструктора</th>
+        <th>Вид трансмиссии на учёбной машине</th>
+        <th></th>
+        <th></th>
+
+    </tr>
+{% for teacher in teachers %}
+    <tr>
+        <td>{{teacher.name}}  </td>
+        <td>{{teacher.subject}}  </td>
+        <td><a href="edit/{{teacher.id}}">Изменить</a> </td>
+        <td><a href="delete/{{teacher.id}}">Удалить</a></td>
+    </tr>
+{%endfor%}
+</table>
+    <p><a href="/">На главную</a></p>
+    <p><a href="/time_slots">Часы вождения</a></p>
+</body>
+</html>
