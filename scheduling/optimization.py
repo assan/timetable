@@ -138,7 +138,8 @@ def calculate_schedule():
             for t1 in time_slots:
                 for t2 in time_slots:
                     if is_overlapping(t1, t2) and t1 != t2:
-                        model += lpSum(x[i.id, j.id, y.id, d, t1.id] for i in students for y in subjects) + lpSum(x[i.id, j.id, y.id, d, t2.id] for i in students for y in subjects) <= 1
+                        model += lpSum(x[i.id, j.id, y.id, d, t1.id] for i in students for y in subjects) +\
+                                 lpSum(x[i.id, j.id, y.id, d, t2.id] for i in students for y in subjects) <= 1
 
     # 7. Ограничение на окна для ученика
     for i in students:
@@ -146,7 +147,8 @@ def calculate_schedule():
             for t1 in time_slots:
                 for t2 in time_slots:
                     if is_overlapping(t1, t2) and t1 != t2:
-                        model += lpSum(x[i.id, j.id, y.id, d, t1.id] for j in teachers for y in subjects) + lpSum(x[i.id, j.id, y.id, d, t2.id] for j in teachers for y in subjects) <= 1
+                        model += lpSum(x[i.id, j.id, y.id, d, t1.id] for j in teachers for y in subjects) +\
+                                 lpSum(x[i.id, j.id, y.id, d, t2.id] for j in teachers for y in subjects) <= 1
 
     # Решение модели
     status = model.solve()
