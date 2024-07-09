@@ -31,19 +31,14 @@ def schedule_view(request):
     for lesson in lessons:
         schedule[lesson.day_of_week].append(lesson)
 
+    # Сортируем уроки по времени начала внутри каждого дня
+    for day in schedule:
+        schedule[day].sort(key=lambda x: x.time_slot.start_time)
+
     context = {'schedule': schedule}
     return render(request, 'schedule.html', context)
 
-# def update_availability_view(request):
-#     if request.method == 'POST':
-#         form = AvailabilityForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('schedule')
-#     else:
-#         form = AvailabilityForm()
-#     return render(request, 'update_availability.html', {'form': form})
-#Добавление, изменение и удаление студентов
+
 def students_view(request):
     if request.method=='POST':
         form=StudentForm(request.POST)
@@ -65,6 +60,7 @@ def students_view(request):
                                    friday_free_time= friday_free_time,saturday_free_time=saturday_free_time, \
                                     sunday_free_time=sunday_free_time)
         students=Student.objects.all()
+        form=StudentForm()
         return render(request,'enter_students.html',{'form':form,'students':students})
 
     form=StudentForm()
@@ -109,6 +105,7 @@ def subject_view(request):
             name=data.get('name')
             Subject.objects.create(name=name)
             subjects=Subject.objects.all()
+        form=SubjectForm()
         return render(request,'enter_subjects.html',{'form':form,'subjects':subjects})
     form=SubjectForm()
     subjects = Subject.objects.all()
@@ -153,6 +150,7 @@ def teacher_view(request):
             subject=data.get('subject')
             Teacher.objects.create(name=name,subject=subject)
             teachers=Teacher.objects.all()
+        form=TeacherForm()
         return render(request,'enter_teachers.html',{'form':form,'teachers':teachers})
     form=TeacherForm()
     teachers = Teacher.objects.all()
