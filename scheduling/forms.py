@@ -16,15 +16,19 @@ from .models import *
 class StudentForm(forms.ModelForm):
     subject = forms.ModelChoiceField(queryset=Subject.objects.all())
     teacher=forms.ModelChoiceField(queryset=Teacher.objects.all())
-    day_of_week = forms.ChoiceField(choices=Student.DAY_OF_WEEK_CHOICES)
     class Meta:
         model= Student
-        fields=['name','subject','teacher','day_of_week','free_time']
+        fields='__all__'
         labels = {'name': 'Имя',
                   'subject':'Тип коробки передач',
-                  'day_of_week':'День недели',
-                  'free_time':'Свобоное время',
-                  'teacher':'Инструктор'}
+                  'teacher':'Инструктор',
+                  'monday_free_time':"Свободное время в понедельник",
+                  'tuesday_free_time':"Свободное время во вторник",
+                  'wednesday_free_time':"Свободное время в среду",
+                  'thursday_free_time':"Свободное время в четверг",
+                  'friday_free_time':"Свободное время в пятницу",
+                  'saturday_free_time':"Свободное время в субботу",
+                  'sunday_free_time':"Свободное время в воскресенье"}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

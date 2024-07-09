@@ -6,7 +6,6 @@ from . import views
 urlpatterns = [
     path('', views.schedule_view, name='schedule'),  # Отображение расписания
     path('calculate/', views.calculate_schedule_view, name='calculate_schedule'),  # Расчет расписания
-    path('availability/', views.update_availability_view, name='update_availability'),  # Обновление доступности
     path('students/',views.students_view, name='students_view'),
     path("students/edit/<int:id>/", views.edit_student),
     path("students/delete/<int:id>/", views.delete_student),

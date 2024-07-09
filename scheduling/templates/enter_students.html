@@ -18,18 +18,28 @@
         <th>Имя курсанта</th>
         <th>Имя инструктора</th>
         <th>Тип трансмиссии</th>
-        <th>День недели</th>
-        <th>Свободное время</th>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+         <th>Пятница</th>
+         <th>Суббота</th>
+         <th>Воскресенье</th>
         <th></th>
-        <th></th>
+          <th></th>
     </tr>
     {% for student in students %}
     <tr>
         <td>{{ student.name }}</td>
         <td>{{ student.teacher }}</td>
         <td>{{ student.subject }}</td>
-        <td>{{ student.get_day_of_week_display }}</td>
-        <td>{{ student.free_time }}</td>
+        <td>{{ student.monday_free_time }}</td>
+         <td>{{ student.tuesday_free_time }}</td>
+         <td>{{ student.wednesday_free_time }}</td>
+         <td>{{ student.thursday_free_time }}</td>
+         <td>{{ student.friday_free_time }}</td>
+         <td>{{ student.saturday_free_time }}</td>
+        <td>{{ student.sunday_free_time }}</td>
         <td><a href="edit/{{ student.id }}">Изменить</a></td>
         <td><a href="delete/{{ student.id }}">Удалить</a></td>
     </tr>

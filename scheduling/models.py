@@ -15,22 +15,14 @@ class Student(models.Model):
     name = models.CharField(max_length=50)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE)
-    free_time = models.CharField(max_length=100)
+    monday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    tuesday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    wednesday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    thursday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    friday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    saturday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
+    sunday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
 
-    DAY_OF_WEEK_CHOICES = (
-        (0, 'Понедельник'),
-        (1, 'Вторник'),
-        (2, 'Среда'),
-        (3, 'Четверг'),
-        (4, 'Пятница'),
-        (5, 'Суббота'),
-        (6, 'Воскресенье'),
-    )
-
-    day_of_week = models.IntegerField(choices=DAY_OF_WEEK_CHOICES,default = 0)
-
-    def get_day_of_week_display(self):
-        return dict(self.DAY_OF_WEEK_CHOICES)[self.day_of_week]
     def __str__(self):
         return self.name
 

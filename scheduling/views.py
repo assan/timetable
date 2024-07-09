@@ -23,18 +23,26 @@ def calculate_schedule_view(request):
     return render(request, 'calculate_schedule.html')
 
 def schedule_view(request):
+    # Получаем все уроки
     lessons = Lesson.objects.all()
-    return render(request, 'schedule.html', {'lessons': lessons})
 
-def update_availability_view(request):
-    if request.method == 'POST':
-        form = AvailabilityForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('schedule')
-    else:
-        form = AvailabilityForm()
-    return render(request, 'update_availability.html', {'form': form})
+    # Создаем словарь, где ключами будут дни недели, а значениями - соответствующие уроки
+    schedule = {i: [] for i in range(7)}
+    for lesson in lessons:
+        schedule[lesson.day_of_week].append(lesson)
+
+    context = {'schedule': schedule}
+    return render(request, 'schedule.html', context)
+
+# def update_availability_view(request):
+#     if request.method == 'POST':
+#         form = AvailabilityForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('schedule')
+#     else:
+#         form = AvailabilityForm()
+#     return render(request, 'update_availability.html', {'form': form})
 #Добавление, изменение и удаление студентов
 def students_view(request):
     if request.method=='POST':
@@ -42,11 +50,20 @@ def students_view(request):
         if form.is_valid():
             data=form.cleaned_data
             name=data.get('name')
-            day_of_week= data.get('day_of_week')
-            free_time=data.get('free_time')
-            teacher= data.get('teacher')
+            teacher = data.get('teacher')
             subject = data.get('subject')
-            Student.objects.create(name=name, free_time=free_time, day_of_week=day_of_week, teacher=teacher, subject=subject)
+            monday_free_time=data.get('monday_free_time')
+            tuesday_free_time = data.get('tuesday_free_time')
+            wednesday_free_time = data.get('wednesday_free_time')
+            thursday_free_time = data.get('thursday_free_time')
+            friday_free_time = data.get('friday_free_time')
+            saturday_free_time = data.get('saturday_free_time')
+            sunday_free_time = data.get('sunday_free_time')
+            Student.objects.create(name=name, teacher=teacher, subject=subject, \
+                                   monday_free_time= monday_free_time, tuesday_free_time=tuesday_free_time,  \
+                                   wednesday_free_time = wednesday_free_time , thursday_free_time=thursday_free_time, \
+                                   friday_free_time= friday_free_time,saturday_free_time=saturday_free_time, \
+                                    sunday_free_time=sunday_free_time)
         students=Student.objects.all()
         return render(request,'enter_students.html',{'form':form,'students':students})
 
@@ -109,7 +126,7 @@ def edit_subject(request, id):
                 data=form.cleaned_data
                 subject.name = data.get("name")
                 subject.save()
-            return redirect("/students")
+            return redirect("/subjects")
         else:
             form = StudentForm()
             subjects = Subject.objects.all()
@@ -154,7 +171,7 @@ def edit_teacher(request, id):
                 teacher.name = data.get("name")
                 teacher.subject=data.get('subject')
                 teacher.save()
-            return redirect("/students")
+            return redirect("/teachers")
         else:
             form = TeacherForm()
             teachers = Teacher.objects.all()

@@ -64,25 +64,30 @@ def init_availability():
                     for time_slot in time_slots:
                         Availability.objects.create(student=student, time_slot=time_slot, teacher=teacher,\
                                                     day_of_week=day_of_week, subject=subject, available=False)
-    for day_of_week in range(7):
-        for teacher in teachers:
-            for student in students:
-               if student.teacher==teacher and student.day_of_week==day_of_week:
+    days_of_week={0:'monday_free_time',
+                  1:'tuesday_free_time',
+                  2:"wednesday_free_time",
+                  3:"thursday_free_time",
+                  4:"friday_free_time",
+                  5:"saturday_free_time",
+                  6:"sunday_free_time"}
+    for day in range(7):
+        day_of_week = days_of_week[day]
+        for student in students:
+            if getattr(student, day_of_week):
+                teacher=student.teacher
+                for time_slot in time_slots:
+                    free_time=getattr(student, day_of_week)
+                    sft, eft = parse_start_end(free_time)
+                    sts=time_to_int(time_slot.start_time)
+                    ets=time_to_int(time_slot.end_time)
+                    subject=student.subject
+                    if sft<=sts and eft>=ets:
+                        print(student.name, time_slot.start_time, time_slot.end_time, teacher.name, day_of_week)
+                        avail= Availability.objects.get(student=student, time_slot=time_slot, teacher=teacher, day_of_week=day, subject=subject)
+                        avail.available= True
+                        avail.save()
 
-                    for time_slot in time_slots:
-                        free_time=student.free_time
-                        # slot_time=time_slot.time
-                        sft, eft = parse_start_end(free_time)
-                        sts=time_to_int(time_slot.start_time)
-                        ets=time_to_int(time_slot.end_time)
-                        # sts, ets = parse_start_end(slot_time)
-                        subject=student.subject
-                        if sft<=sts and eft>=ets:
-                            print(student.name, time_slot.start_time, time_slot.end_time, teacher.name, day_of_week)
-                            avail= Availability.objects.get(student=student, time_slot=time_slot, teacher=teacher, day_of_week=day_of_week, subject=subject)
-                            avail.available= True
-                            avail.save()
-                           # Availability.objects.create(student=student, time_slot=time_slot, teacher=teacher, day_of_week=day_of_week, subject=subject, available=True)
 
 
 def calculate_schedule():
