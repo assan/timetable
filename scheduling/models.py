@@ -15,6 +15,7 @@ class Student(models.Model):
     name = models.CharField(max_length=50)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE)
+    times_per_week=models.IntegerField(default=7)
     monday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
     tuesday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)
     wednesday_free_time = models.CharField(max_length=100, default="", null = True, blank = True)

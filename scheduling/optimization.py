@@ -154,6 +154,10 @@ def calculate_schedule():
                     if is_overlapping(t1, t2) and t1 != t2:
                         model += lpSum(x[i.id, j.id, y.id, d, t1.id] for j in teachers for y in subjects) +\
                                  lpSum(x[i.id, j.id, y.id, d, t2.id] for j in teachers for y in subjects) <= 1
+    #8 Ограничение на желаемое количество занятий в неделю
+    for i in students:
+        model += lpSum(x[i.id, j.id, y.id,d, t.id] for d in range(7) for j in teachers for y in subjects for t in
+                       time_slots) <= i.times_per_week
 
     # Решение модели
     status = model.solve()

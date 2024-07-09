@@ -22,6 +22,7 @@ class StudentForm(forms.ModelForm):
         labels = {'name': 'Имя',
                   'subject':'Тип коробки передач',
                   'teacher':'Инструктор',
+                  'times_per_week':'Желаемое количество занятий в неделю',
                   'monday_free_time':"Свободное время в понедельник",
                   'tuesday_free_time':"Свободное время во вторник",
                   'wednesday_free_time':"Свободное время в среду",

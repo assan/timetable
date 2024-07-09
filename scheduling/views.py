@@ -47,6 +47,7 @@ def students_view(request):
             name=data.get('name')
             teacher = data.get('teacher')
             subject = data.get('subject')
+            times_per_week=data.get('times_per_week')
             monday_free_time=data.get('monday_free_time')
             tuesday_free_time = data.get('tuesday_free_time')
             wednesday_free_time = data.get('wednesday_free_time')
@@ -54,13 +55,12 @@ def students_view(request):
             friday_free_time = data.get('friday_free_time')
             saturday_free_time = data.get('saturday_free_time')
             sunday_free_time = data.get('sunday_free_time')
-            Student.objects.create(name=name, teacher=teacher, subject=subject, \
+            Student.objects.create(name=name, teacher=teacher, subject=subject, times_per_week=times_per_week, \
                                    monday_free_time= monday_free_time, tuesday_free_time=tuesday_free_time,  \
                                    wednesday_free_time = wednesday_free_time , thursday_free_time=thursday_free_time, \
                                    friday_free_time= friday_free_time,saturday_free_time=saturday_free_time, \
                                     sunday_free_time=sunday_free_time)
         students=Student.objects.all()
-        form=StudentForm()
         return render(request,'enter_students.html',{'form':form,'students':students})
 
     form=StudentForm()
@@ -74,18 +74,17 @@ def edit_student(request, id):
         student = Student.objects.get(id=id)
 
         if request.method == "POST":
-            form=StudentForm(request.POST)
+            form = StudentForm(request.POST, instance=student)
             if form.is_valid():
-                data=form.cleaned_data
-                student.name = data.get("name")
-                student.save()
-            return redirect("/students")
+                form.save()
+                return redirect("/students")
         else:
-            form = StudentForm()
+            form = StudentForm(instance=student)
             students = Student.objects.all()
-            return render(request, "enter_students.html",{'form':form,'students':students})
+            return render(request, "enter_students.html", {'form': form, 'students': students})
     except Student.DoesNotExist:
         return HttpResponseNotFound("<h2>Курсант не найден</h2>")
+
 
 # удаление данных из бд
 def delete_student(request, id):

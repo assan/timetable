@@ -6,6 +6,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+<p><a href="/">На главную</a></p>
+<p><a href="/time_slots">Часы вождения</a></p>
 <h2>Введите имена курсантов на вождение</h2>
 <form method="post">
     {% csrf_token %}
@@ -18,6 +20,7 @@
         <th>Имя курсанта</th>
         <th>Имя инструктора</th>
         <th>Тип трансмиссии</th>
+        <th>Занятий в неделю</th>
         <th>Понедельник</th>
         <th>Вторник</th>
         <th>Среда</th>
@@ -33,6 +36,7 @@
         <td>{{ student.name }}</td>
         <td>{{ student.teacher }}</td>
         <td>{{ student.subject }}</td>
+        <td>{{student.times_per_week}}</td>
         <td>{{ student.monday_free_time }}</td>
          <td>{{ student.tuesday_free_time }}</td>
          <td>{{ student.wednesday_free_time }}</td>
@@ -45,8 +49,7 @@
     </tr>
     {% endfor %}
 </table>
-<p><a href="/">На главную</a></p>
-<p><a href="/time_slots">Часы вождения</a></p>
+
 
 <script type="text/javascript">
     $(document).ready(function () {

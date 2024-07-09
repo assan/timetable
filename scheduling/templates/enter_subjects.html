@@ -5,6 +5,8 @@
     <title>Трансмиссии</title>
 </head>
 <body>
+    <p><a href="/">На главную</a></p>
+    <p><a href="/time_slots">Часы вождения</a></p>
 <h2>Введите типы трансмиссий</h2>
 <form method="post">
         {% csrf_token %}
@@ -27,7 +29,6 @@
     </tr>
 {%endfor%}
 </table>
-    <p><a href="/">На главную</a></p>
-    <p><a href="/time_slots">Часы вождения</a></p>
+
 </body>
 </html>
