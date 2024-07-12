@@ -105,15 +105,15 @@ def calculate_schedule():
     # Переменные: x[i][j][y][d][t] = 1 если урок y для студента i и учителя j назначен на день d в временной слот t, иначе 0
     x = LpVariable.dicts("x", [(i.id, j.id, y.id, d, t.id) for i in students for j in teachers for y in subjects for d in range(7) for t in time_slots], cat='Binary')
 
-    # Целевая функция: максимизировать количество проведенных занятий
-    model += lpSum(x[i.id, j.id, y.id, d, t.id] for i in students for j in teachers for y in subjects for d in range(7) for t in time_slots)
 
     # Ограничения
     # 1. Каждый учитель может проводить только один урок в одно и то же время
+    T1 = LpVariable.dicts("T1", [(d, t.id, j.id) for d in range(7) for t in time_slots for j in teachers], 0, 1, LpInteger)
     for j in teachers:
         for d in range(7):
             for t in time_slots:
-                model += lpSum(x[i.id, j.id, y.id, d, t.id] for i in students for y in subjects) <= 1
+                model+=T1[d,t.id,j.id]==lpSum(x[i.id, j.id, y.id, d, t.id] for i in students for y in subjects)
+                model+= T1[d,t.id,j.id] <= 1
 
     # 2. Каждый ученик может посещать только один урок в одно и то же время
     for i in students:
@@ -158,6 +158,12 @@ def calculate_schedule():
     for i in students:
         model += lpSum(x[i.id, j.id, y.id,d, t.id] for d in range(7) for j in teachers for y in subjects for t in
                        time_slots) <= i.times_per_week
+
+
+
+    # Целевая функция: максимизировать количество проведенных занятий
+    model += lpSum( x[i.id, j.id, y.id, d, t.id] for i in students for j in teachers for y in subjects for d in range(7) for t in time_slots) #общее число занятий
+             # -1/3*(lpSum(Surround1[d, u.id, y.id] for d in range(7) for u in time_slots for y in teachers))) #количество "окон" у учителей
 
     # Решение модели
     status = model.solve()
